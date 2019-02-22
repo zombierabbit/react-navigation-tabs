@@ -25,6 +25,7 @@ export type TabBarOptions = {
   tabStyle: any,
   adaptive?: boolean,
   style: any,
+  eventEmitter: any,
 };
 
 type Props = TabBarOptions & {
@@ -75,6 +76,7 @@ class TabBarBottom extends React.Component<Props> {
     allowFontScaling: true,
     adaptive: isIOS11,
     safeAreaInset: { bottom: 'always', top: 'never' },
+    eventEmitter: undefined,
   };
 
   _renderLabel = ({ route, focused }) => {
@@ -184,6 +186,25 @@ class TabBarBottom extends React.Component<Props> {
     }
   };
 
+  componentDidMount(): void {
+    var self: any = this;
+    self._subscribableSubscriptions = [];
+
+    var eventEmitter: any = this.props.eventEmitter;
+    if(eventEmitter){
+      self._subscribableSubscriptions.push(eventEmitter.addListener("BottomTabBar", (data: any) => {
+        self.props.onTabPress(data)
+      }));
+    }
+  }
+
+  componentWillUnmount(): void {
+    this._subscribableSubscriptions.forEach(
+      (subscription) => subscription.remove()
+    );
+    this._subscribableSubscriptions = null;
+  }
+
   render() {
     const {
       navigation,
@@ -193,6 +214,7 @@ class TabBarBottom extends React.Component<Props> {
       safeAreaInset,
       style,
       tabStyle,
+      eventEmitter,
     } = this.props;
 
     const { routes } = navigation.state;
