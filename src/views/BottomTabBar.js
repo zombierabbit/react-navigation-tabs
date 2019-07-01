@@ -206,6 +206,8 @@ class TabBarBottom extends React.Component<Props> {
   }
 
   render() {
+    var self: any = this;
+
     const {
       navigation,
       activeBackgroundColor,
@@ -248,7 +250,10 @@ class TabBarBottom extends React.Component<Props> {
           return (
             <ButtonComponent
               key={route.key}
-              onPress={() => onTabPress({ route })}
+              onPress={() => {
+                onTabPress({ route });
+                self.props.eventEmitter.emit('onNavigate', route.routeName);
+              }}
               testID={testID}
               accessibilityLabel={accessibilityLabel}
               style={[
