@@ -8,7 +8,6 @@ import {
   View,
   Platform,
 } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
 
 import CrossFadeIcon from './CrossFadeIcon';
 import withDimensions from '../utils/withDimensions';
@@ -230,7 +229,7 @@ class TabBarBottom extends React.Component<Props> {
     ];
 
     return (
-      <SafeAreaView style={tabBarStyle} forceInset={safeAreaInset}>
+      <View style={tabBarStyle} forceInset={safeAreaInset}>
         {routes.map((route, index) => {
           const focused = index === navigation.state.index;
           const scene = { route, focused };
@@ -270,7 +269,7 @@ class TabBarBottom extends React.Component<Props> {
             </ButtonComponent>
           );
         })}
-      </SafeAreaView>
+      </View>
     );
   }
 }
